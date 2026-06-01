@@ -20,7 +20,7 @@ const LoginForm = () => {
   }
 
   return (
-    <Container className="hero py-5">
+    <Container fluid className="hero py-5">
       <Form className="customForm" onSubmit={handleSubmit}>
         <h4>login</h4>
         <Form.Group className="mb-2">
@@ -46,14 +46,17 @@ const LoginForm = () => {
           />
           <Form.Label>insert your password</Form.Label>
         </Form.Group>
-        <Button
-          className="btn btn-success px-2 py-1 mb-2"
-          type="submit"
-        >
+        <Button className="btn btn-success px-2 py-1 mb-2" type="submit">
           Login
         </Button>
         <br />
-        {error == true ? (<Alert variant="success" className="mt-3">Something went wrong, try again.</Alert>) : (<></>)}
+        {error == true ? (
+          <Alert variant="success" className="mt-3">
+            Something went wrong, try again.
+          </Alert>
+        ) : (
+          <></>
+        )}
         <span>Not subscribed yet? </span>
         <a href="/signup">Sign up</a>
       </Form>

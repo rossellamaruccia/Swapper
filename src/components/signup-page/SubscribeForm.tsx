@@ -53,7 +53,7 @@ const SubscribeForm = () => {
   }
 
   return (
-    <Container className="hero py-5">
+    <Container fluid className="hero py-5">
       <Form className="customForm" onSubmit={handleSubmit}>
         <h4>Become a swapper!</h4>
 
