@@ -35,6 +35,11 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "swapper-logo.svg",
+      "sizes": "180x90",
+      "type": "image/svg"
     }
   ]
 }

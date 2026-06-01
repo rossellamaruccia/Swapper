@@ -1,0 +1,225 @@
+body{
+  font-family: "Iosevka Charon", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+div{
+  width: 100%;
+  padding: 0;
+  margin: 0 auto;
+  display: inline;
+}
+
+a{
+  color: #FE9C54;
+  text-decoration: none;
+}
+
+a:hover{
+  color: #b44b00;
+}
+
+h4{
+  color: #b44b00
+}
+
+.container{
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+}
+
+:root{
+margin: 0 auto;
+  padding: 0;
+  width: 100%;
+}
+
+.row{
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.col{
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.btn{
+  margin: 0;
+  padding: 0;
+}
+
+.round-button {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-small{
+  max-width: 6rem;
+}
+
+.navbar{
+  position: sticky;
+  width: 100%;
+}
+
+.navbar-toggler {
+  background-color: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  margin-left: 40%;
+}
+
+.navbar-collapse .btn {
+  color: #333;
+  background-color: transparent;
+  margin: 0 auto;
+}
+
+.formCol{
+  border: none;
+  background-color: gainsboro;
+  width: 100%;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.buttonsCol{
+  text-align: end;
+  
+}
+
+.settingsButton{
+  background: white;
+  color: black;
+  border: none;
+  font-weight: 500;
+  font-size: large;
+  padding: 10px;
+}
+
+.settingsButton:hover{
+  background: white;
+  color: green;
+  border: none;
+  font-weight: 500;
+  font-size: large;
+  opacity: 1;
+  visibility: visible;
+  transform: scale(105%, 105%);
+}
+
+.label {
+  position: absolute;
+  bottom: 65%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.settingsButton:hover .label {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.subscribeButton:hover{
+  color:green;
+  transform: scale(108%);
+}
+
+.hero{
+  box-sizing: border-box;
+  background-image: url('./assets/sfondo.png');
+  background-position: bottom;
+  object-fit:fill;
+}
+
+.customForm{
+  background-color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 40%;
+  margin: 1rem 3rem;
+  font-size: small;
+  color: darkgreen;
+}
+
+h4{
+  text-align: center;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.dummy-profile-pic{
+  width: 150px;
+  height: 150px;
+  border-radius: 50px;
+  margin: 0 auto;
+  padding: 0;
+  background-color: grey;
+  background-image: url(/src/assets/pexels-wordsurfer-909256.jpg);
+  background-size:contain;
+  border: darkgray 2px;
+}
+
+.profile-picture{
+  width: 80px;
+  height: 80px;
+  border-radius: 50px;
+  margin: 0 auto;
+  padding: 0;
+  border: darkgray 2px;
+  object-fit: cover;
+}
+
+.itemCard{
+  border-radius: 0;
+  cursor:pointer;
+}
+
+.itemCard img{
+  height: 60%;
+  object-fit: cover;
+}
+
+.img-fluid{
+  max-height: 70vh;
+}
+
+.itemCard body{
+  height: 40%;
+}
+
+.carousel-indicators{
+  opacity: 0;
+}
+
+.card-body a{
+  font-size: 0.6rem;
+  border: 1px solid gray;
+  
+}
