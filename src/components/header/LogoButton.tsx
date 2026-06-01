@@ -9,7 +9,7 @@ function LogoButton() {
     <>
         <a href="/" onClick={handleClick}>
           <Image
-            src="../../public/assets/swapper-logo.svg"
+            src="../../public/assets/swapper-logo.png"
             fluid
             className="navbar.brand align-top logo-small"
           />
