@@ -1,7 +1,7 @@
 import LogoButton from "./LogoButton"
 import SearchField from "./SearchField"
 import SettingsButton from "./SettingsButton"
-import { Container, Row, Col, Navbar } from "react-bootstrap"
+import { Row, Col, Navbar, Container } from "react-bootstrap"
 import AddButton from "./AddButton"
 import HelpButton from "./HelpButton"
 import CategoryButton from "../footer/CategoryButton"
@@ -10,35 +10,30 @@ import { ItemCategory } from "../../types/types"
 
 function HeaderBar() {
   return (
-    <Navbar className="" expand="md">
-      <Container fluid className="nav navbar">
-        <Row className="align-items-center w-100">
-          <Col className="col col-xs-10 col-md-2 p-1">
-            <LogoButton />
-          </Col>
-          <Col
-            className="col col-xs-2 col-md-4 align-middle buttonsCol"
-            md={{ order: 3 }}
-          >
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <AccountButton />
-              <AddButton />
-              <SettingsButton />
-              <HelpButton />
-            </Navbar.Collapse>
-          </Col>
+    <Navbar as={Container} className="nav navbar" expand="md">
+      <Row className="align-items-center w-100">
+        <Col className="logoCol" md={{ order: 0 }}>
+          <LogoButton />
+        </Col>
+        <Col className="" md={{ order: 1 }}>
+          <SearchField />
+        </Col>
+        <Col className="buttonsCol" md={{ order: 2 }}>
+          <Navbar.Toggle />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <AccountButton />
+            <AddButton />
+            <SettingsButton />
+            <HelpButton />
+          </Navbar.Collapse>
+        </Col>
 
-          <Col className="col-md-5" md={{ order: 2 }}>
-            <SearchField />
-          </Col>
-          
-          <Col xs="12">
-            {Object.values(ItemCategory).map((value) => (
-              <CategoryButton title={{ title: value }} />
-            ))}
-          </Col>
-        </Row>
-      </Container>
+        <Col className="col col-12" md={{ order: 3 }}>
+          {Object.values(ItemCategory).map((value) => (
+            <CategoryButton title={{ title: value }} />
+          ))}
+        </Col>
+      </Row>
     </Navbar>
   )
 }

@@ -1,5 +1,5 @@
 import { Component } from "react"
-import { Form, Col, Row } from "react-bootstrap"
+import { Form } from "react-bootstrap"
 import { InputGroup } from "react-bootstrap"
 import { FaSearch } from "react-icons/fa"
 
@@ -13,8 +13,8 @@ class SearchField extends Component {
   render() {
     return (
       <>
-        <Form as={Row}>
-          <Form.Group as={Col} className="mx-0 my-3">
+        <Form>
+          <Form.Group className="mx-0 my-3">
             <InputGroup>
               <InputGroup.Text>
                 <FaSearch />

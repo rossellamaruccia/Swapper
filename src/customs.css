@@ -67,6 +67,11 @@ margin: 0 auto;
   max-width: 6rem;
 }
 
+.logoCol{
+  max-width: 20%;
+  margin-right: 2rem;
+}
+
 .navbar{
   position: sticky;
   width: 100%;
@@ -97,7 +102,7 @@ margin: 0 auto;
 
 .buttonsCol{
   text-align: end;
-  
+  max-width: 15%;
 }
 
 .settingsButton{
@@ -149,10 +154,11 @@ margin: 0 auto;
 }
 
 .hero{
-  box-sizing: border-box;
-  background-image: url('./assets/sfondo.png');
-  background-position: bottom;
-  object-fit:fill;
+  background-image: url('../public/assets/background.svg');
+  background-size:cover;
+  margin: 0;
+  background-position: center;
+  display: block;
 }
 
 .customForm{
@@ -222,4 +228,12 @@ h4{
   font-size: 0.6rem;
   border: 1px solid gray;
   
+}
+
+.infoContainer{
+  background: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 60%;
+  margin-bottom: 1rem;
 }

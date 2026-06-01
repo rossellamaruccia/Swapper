@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap"
 function InfoPage() {
     return (
       <Container fluid className="hero w-100 py-5">
-        <Row>
+        <Row className="infoContainer">
           <Col>
             <h4>Who</h4>
             <p>
@@ -14,7 +14,7 @@ function InfoPage() {
             </p>
           </Col>
         </Row>
-        <Row>
+        <Row className="infoContainer">
           <Col>
             <h4>Why</h4>
             <p>

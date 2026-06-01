@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Container, Form, Button, Alert } from "react-bootstrap"
+import { Container, Form, Button, Alert, Row } from "react-bootstrap"
 import LocationPicker from "../account-page/LocationPicker"
 import { newUser } from "../../api/userApi"
 import LocationMap from "../account-page/LocationMap"
@@ -121,13 +121,14 @@ const SubscribeForm = () => {
 
         <Form.Group className="my-3 p-3 border rounded bg-light">
           <h6>Privacy & Location</h6>
-          <LocationPicker onLocationFound={handleLocationChange} />
-          {user.location.lat !== 0 && (
-            <div className="mt-3">
-              
-              <LocationMap lat={user.location.lat} lng={user.location.lng} />
-            </div>
-          )}
+          <Row>
+            <LocationPicker onLocationFound={handleLocationChange} />
+            {user.location.lat !== 0 && (
+              <div className="mt-3">
+                <LocationMap lat={user.location.lat} lng={user.location.lng} />
+              </div>
+            )}
+          </Row>
         </Form.Group>
 
         <Button
