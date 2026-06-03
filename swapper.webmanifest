@@ -37,9 +37,9 @@
       "purpose": "maskable"
     },
     {
-      "src": "swapper-logo.svg",
+      "src": "swapper-logo.png",
       "sizes": "180x90",
-      "type": "image/svg"
+      "type": "image/png"
     }
   ]
 }

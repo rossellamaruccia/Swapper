@@ -20,6 +20,7 @@ class SearchField extends Component {
                 <FaSearch />
               </InputGroup.Text>
               <Form.Control
+                id="search"
                 type="text"
                 placeholder="Search"
                 className="formCol"
