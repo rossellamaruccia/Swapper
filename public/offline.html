@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Swapper</title>
     <meta name="description" content="free local items and tools swap app" />
-    <link rel="manifest" href="/swapper.webmanifest">
+    <!-- <link rel="manifest" href="/swapper.webmanifest"> -->
     <link rel="icon" href="/public/assets/launchericon-512x512.png" />
     <link
       rel="apple-touch-icon"
@@ -21,11 +21,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-    <script>
-      if(typeof navigator.serviceWorker !== undefined){
-        navigator.serviceWorker.register("sw.js")
-      }
-    </script>
+    <script type="module" src="/src/offline.tsx"></script>
   </body>
 </html>
