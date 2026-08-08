@@ -1,0 +1,15 @@
+services:
+  frontend:
+    depends_on:
+      - api
+  api:
+    depends_on:
+      - db
+  db:
+    restart: always
+  
+networks:
+  traefik:
+    external: true
+    
+volumes:
