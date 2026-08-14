@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { Container, Form, Button, Alert } from "react-bootstrap"
 import { loggingUser } from "../../api/userApi"
 
-
 const LoginForm = () => {
   const [formValue, setFormValue] = useState({ email: "", password: "" })
   const [error, setError] = useState(false)
@@ -22,7 +21,7 @@ const LoginForm = () => {
   return (
     <Container fluid className="hero py-5">
       <Form className="customForm" onSubmit={handleSubmit}>
-        <h4>login</h4>
+        <h1>login</h1>
         <Form.Group className="mb-2">
           <Form.Control
             type="email"

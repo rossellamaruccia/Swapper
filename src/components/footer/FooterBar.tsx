@@ -12,19 +12,19 @@ function FooterBar() {
         <hr></hr>
         <Row className="text-center">
           <Col>
-            <h4>Swappie</h4>
+            <h1>Swappie</h1>
             <CustomLink title={{ title: "Who and why" }} />
             <CustomLink title={{ title: "Community and care" }} />
             <CustomLink title={{ title: "Results" }} />
           </Col>
           <Col>
-            <h4>Discover</h4>
+            <h1>Discover</h1>
             <CustomLink title={{ title: "How does this work?" }} />
             <CustomLink title={{ title: "Safety and privacy issues" }} />
             <CustomLink title={{ title: "No money policy" }} />
           </Col>
           <Col>
-            <h4>Help</h4>
+            <h1>Help</h1>
             <CustomLink title={{ title: "FAQ" }} />
             <CustomLink title={{ title: "Contacts" }} />
             <CustomLink title={{ title: "Profile issues" }} />

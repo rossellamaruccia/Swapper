@@ -55,7 +55,7 @@ const SubscribeForm = () => {
   return (
     <Container fluid className="hero py-5">
       <Form className="customForm" onSubmit={handleSubmit}>
-        <h4>Become a swapper!</h4>
+        <h1>Become a swapper!</h1>
 
         <Form.Group className="mb-2">
           <Form.Label>Name</Form.Label>
