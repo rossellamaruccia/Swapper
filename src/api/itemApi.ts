@@ -1,5 +1,5 @@
-const API_BASE_URL: string = import.meta.env.API_BASE_URL
 import type { Item, ItemGetResponse } from "../types/types"
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export async function addNewItem(token: string | null, body: Item) {
   if (!token) {

@@ -13,16 +13,19 @@ import {
   Image,
   Alert,
   Spinner,
+  Button,
 } from "react-bootstrap"
 import LoginForm from "../../signup-page/LoginForm"
 import UserDetails from "../../account-page/UserDetails"
 import { getUserDetails } from "../../../api/userApi"
 
+//Parent component
+//children: Item Element, Edit Modal
 
 const ItemDetail = () => {
   const [itemData, setItemData] = useState<ItemGetResponse | null>(null)
   const [userData, setUserData] = useState<UserGetResponse | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [searchParams] = useSearchParams()
   const itemID = searchParams.get("itemID")
@@ -39,7 +42,6 @@ const ItemDetail = () => {
 
           setItemData(item)
           setUserData(user)
-
         }
       } catch (err) {
         setError(true)
@@ -51,20 +53,19 @@ const ItemDetail = () => {
     loadItem()
   }, [itemID, authToken])
 
-
   if (loading) {
     return (
-      <Alert className="my-3 p-3 text-center w-50 mx-auto">
-        Loading item...
-        <Spinner />
-      </Alert>
+      <Container>
+        <Alert className="text-center bg-danger-subtle border-0 text-danger">Loading item...</Alert>
+        <Spinner className="mx-auto d-block text-danger" />
+      </Container>
     )
   }
 
   if (error || !authToken) {
     return (
-      <Container className="text-center mt-5">
-        <Alert variant="info" className="my-3 p-3 text-center w-50 mx-auto">
+      <Container>
+        <Alert className="text-center bg-danger-subtle border-0 text-danger">
           Session expired. Please log in again.
         </Alert>
         <LoginForm />
@@ -72,30 +73,29 @@ const ItemDetail = () => {
     )
   }
   return (
-    <Container>
       <Row>
-        <Col xs="12" md="7">
+        <Col xs="12" md="8" className="mb-2">
           <Carousel>
             {itemData?.pics_urls?.map((pic, i = 0) => (
               <Carousel.Item key={i + 1}>
-                <Image fluid src={pic} className="w-100 object-fit-cover"/>
+                <Image fluid src={pic} className="w-100 object-fit-cover" />
               </Carousel.Item>
             ))}
           </Carousel>
         </Col>
-        <Col xs="6" md="3" className="mt-2">
+        <Col xs="12" md="4">
           <h2>{itemData?.title}</h2>
           <p>{itemData?.description}</p>
           <br />
-          <small>{itemData?.type}</small>
+          <small className="red-highlight">{itemData?.type}</small>
           <br />
-          <small>{itemData?.category}</small>
+          <small className="red-highlight">{itemData?.category}</small>
         </Col>
-        <Col xs="6" md="2">
+        <Col xs="12" md="5" className="p-2">
+          <Button variant="success">Contact the owner</Button>
           <UserDetails user={userData!} />
         </Col>
       </Row>
-    </Container>
   )
 }
 export default ItemDetail
