@@ -10,14 +10,16 @@ interface FeedProps {
   items: ItemGetResponse[]
   loading: boolean
   error: boolean
+  category: string
+  setCategory: (category: string) => void
+  setRadius: (radius: number) => void
 }
 
-const FeedContainer = ({ items, loading, error }: FeedProps) => {
-  const [radius, setRadius] = useState(20)
+const FeedContainer = ({ items, loading, error, category, setCategory, setRadius}: FeedProps) => {
 
   return (
     <Container fluid className="py-4">
-      <HorizontalScrollCategories />
+      <HorizontalScrollCategories category={category} setCategory={setCategory} />
       <Row>
         <FeedFilter onDistanceChange={(val: number) => setRadius(val)} />
       </Row>

@@ -4,7 +4,7 @@ import LocationMap from "./LocationMap"
 import { useNavigate } from "react-router-dom"
 
 interface ElementProps {
-  user: UserGetResponse
+  user: UserGetResponse | null
 }
 
 const UserDetails = ({ user }: ElementProps) => {

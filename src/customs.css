@@ -67,6 +67,10 @@ a:hover {
     cursor: grab;
 }
 
+.categories-div .selected{
+  background-color: #E7191F;
+}
+
 .categories-div::-webkit-scrollbar {
   display: none;
 }

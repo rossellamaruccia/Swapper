@@ -3,7 +3,12 @@ import CategoryButton from "../body/CategoryButton"
 import { Row, Col } from "react-bootstrap"
 import { useState, useRef } from "react"
 
-const HorizontalScrollCategories = () => {
+interface Props {
+  category: string
+  setCategory: (category: string) => void
+}
+
+const HorizontalScrollCategories = ({category, setCategory} : Props) => {
   const [isDown, setIsDown] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
@@ -53,7 +58,7 @@ const HorizontalScrollCategories = () => {
     >
       <Col className="col col-12" md={{ order: 3 }}>
         {Object.values(ItemCategory).map((value) => (
-          <CategoryButton title={{ title: value }} key={value} />
+          <CategoryButton title={{ title: value }} key={value} category={category} setCategory={setCategory} />
         ))}
       </Col>
     </Row>

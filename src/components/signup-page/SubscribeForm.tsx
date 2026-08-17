@@ -146,10 +146,17 @@ const SubscribeForm = () => {
         </div>
 
         {isSuccess && (
-          <Alert variant="success" className="mt-3">
-            You're in! Check your confirmation email and start exploring
-            Swappie.
-          </Alert>
+          <>
+            <Alert variant="success" className="mt-3">
+              You're in! Start exploring Swappie or add your first item.
+            </Alert>
+            <Button variant="success">
+              <a href="/">Feed</a>
+            </Button>
+            <Button variant="success">
+              <a href="/add">Add Item</a>
+            </Button>
+          </>
         )}
 
         {errorMessage && (

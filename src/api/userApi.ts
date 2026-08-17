@@ -45,7 +45,6 @@ export async function loggingUser(payload: UserLogin): Promise<boolean> {
     if (response.ok) {
       const data: LoginResponse = JSON.parse(text)
       localStorage.setItem("accessToken", data.accessToken)
-      window.location.href = "/account"
       return true
     } else {
       try {

@@ -1,10 +1,12 @@
 import React, { useState } from "react"
 import { Container, Form, Button, Alert } from "react-bootstrap"
 import { loggingUser } from "../../api/userApi"
+import { useNavigate } from "react-router-dom"
 
 const LoginForm = () => {
   const [formValue, setFormValue] = useState({ email: "", password: "" })
   const [error, setError] = useState(false)
+  const navigate = useNavigate()
 
   const handleSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault()
@@ -12,6 +14,8 @@ const LoginForm = () => {
       const response = await loggingUser(formValue)
       if (!response) {
         setError(true)
+      } else {
+        navigate("/")
       }
     } catch {
       setError(true)
