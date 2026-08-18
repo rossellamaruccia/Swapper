@@ -16,14 +16,14 @@ const UserDetails = ({ user }: ElementProps) => {
           onClick={() => {
             navigate(`/account?user=${user.id}`)
           }}
-          className="distance-filter"
+          className="mb-2"
         >
           <Card.Body>
-            <Stack direction="horizontal" className="mt-auto mb-2">
-              <Image src={user.profilePic!} className="profile-picture mx-1" />
+            <Stack direction="horizontal" className="mb-2">
               <h6>
                 {user.name}, {user.city}
               </h6>
+              <Image src={user.profilePic!} className="profile-picture mx-1" />
             </Stack>
             <LocationMap lng={user.location!.lng} lat={user.location!.lat} />
           </Card.Body>

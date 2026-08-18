@@ -84,7 +84,8 @@ function AppContent() {
                       items={items}
                       loading={loading}
                       error={error}
-                      category={category}
+                                category={category}
+                                radius={radius}
                                 setCategory={setCategory}
                                 setRadius={setRadius}
                     />
@@ -100,8 +101,10 @@ function AppContent() {
                 element={
                   <PrivateRoute>
                     <AccountContainer
-                      authUser={activeUser?.id}
-                      authToken={authToken}
+                      authUser={activeUser!.id!}
+                      authToken={authToken!}
+                      error={error}
+                      setError={setError}
                     />
                   </PrivateRoute>
                 }

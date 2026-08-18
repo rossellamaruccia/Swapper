@@ -57,8 +57,9 @@ export async function getAllItems(
 
 export async function getItemsPerUser(
   token: string | null,
+  id: string
 ): Promise<ItemGetResponse[]> {
-  const response = await fetch(`${API_BASE_URL}/items`, {
+  const response = await fetch(`${API_BASE_URL}/items?user=${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -36,13 +36,9 @@ const ItemDetail = () => {
       try {
         setLoading(true)
         const item = await getItemDetails(authToken, Number(itemID))
-
-        if (item) {
-          const user = await getUserDetails(authToken, item.user_id!)
-
-          setItemData(item)
-          setUserData(user)
-        }
+        const user = await getUserDetails(authToken, item.user_id!)
+        setItemData(item)
+        setUserData(user)   
       } catch (err) {
         setError(true)
         console.log(err)
@@ -73,29 +69,29 @@ const ItemDetail = () => {
     )
   }
   return (
-      <Row>
-        <Col xs="12" md="8" className="mb-2">
-          <Carousel>
-            {itemData?.pics_urls?.map((pic, i = 0) => (
-              <Carousel.Item key={i + 1}>
-                <Image fluid src={pic} className="w-100 object-fit-cover" />
-              </Carousel.Item>
-            ))}
-          </Carousel>
-        </Col>
-        <Col xs="12" md="4">
-          <h2>{itemData?.title}</h2>
-          <p>{itemData?.description}</p>
-          <br />
-          <small className="red-highlight">{itemData?.type}</small>
-          <br />
-          <small className="red-highlight">{itemData?.category}</small>
-        </Col>
-        <Col xs="12" md="5" className="p-2">
-          <Button variant="success">Contact the owner</Button>
-          <UserDetails user={userData!} />
-        </Col>
-      </Row>
+    <Row>
+      <Col xs="12" md="8" className="mb-2">
+        <Carousel>
+          {itemData?.pics_urls?.map((pic, i = 0) => (
+            <Carousel.Item key={i + 1}>
+              <Image fluid src={pic} className="w-100 object-fit-cover" />
+            </Carousel.Item>
+          ))}
+        </Carousel>
+        <br />
+        <h2>{itemData?.title}</h2>
+        <p>{itemData?.description}</p>
+        <br />
+        <small className="red-highlight">{itemData?.type}</small>
+        <br />
+        <small className="red-highlight">{itemData?.category}</small>
+        <br />
+      </Col>
+      <Col xs="12" md="4">
+        <UserDetails user={userData!} />
+        <Button className="mt-2 contactButton">Contact the owner</Button>
+      </Col>
+    </Row>
   )
 }
 export default ItemDetail

@@ -3,11 +3,11 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { Container, Row, Col, Button, Alert } from "react-bootstrap"
 import UserDetails from "./UserDetails"
-import { getUserInfo, getUserDetails } from "../../api/userApi"
+import { getUserDetails } from "../../api/userApi"
 import { getAuthStatus } from "../../utils/authTools"
 import { getItemsPerUser } from "../../api/itemApi"
 import type { ItemGetResponse, Item, UserGetResponse } from "../../types/types"
-import ItemElement from "../body/feed-element/ItemElement"
+import ItemElement from "../body/feed-element/ItemCard"
 import LoginForm from "../signup-page/LoginForm"
 import { FaEdit } from "react-icons/fa"
 import { MdDelete } from "react-icons/md"
@@ -17,48 +17,47 @@ import EditModal from "../body/feed-element/EditModal"
 import { editItem } from "../../api/itemApi"
 
 interface AccountProps {
-  authUser: string | null | undefined
-  authToken: string | null
+  authUser: string
+  authToken: string
+  error: boolean
+  setError: (error: boolean) => void
 }
 
-const AccountContainer = ({ authUser, authToken }: AccountProps) => {
+const AccountContainer = ({ authUser, authToken, error, setError }: AccountProps) => {
   const [user, setUser] = useState<UserGetResponse | null>(null)
   const [items, setItems] = useState<ItemGetResponse[] | undefined>([])
-  const [error, setError] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [selectedItem, setSelectedItem] = useState<ItemGetResponse | null>(null)
   const navigate = useNavigate()
 
+  
   const fetchUserDetails = async () => {
-    try {
-      const [userData, itemData] = await Promise.all([
-        getUserDetails(authToken, authUser!),
-        getItemsPerUser(authToken),
-      ])
-      setUser(userData)
-      setItems(itemData)
-    } catch (err) {
-      console.error("Fetch failed:", err)
-      setError(true)
-    }
-  }
+    const searchParams = new URLSearchParams(window.location.search)
+    const id = searchParams.get("user")
 
-  const fetchData = async () => {
     if (!authToken || !getAuthStatus(authToken)) {
       setError(true)
-      return
+      navigate("/login")
     }
 
     try {
+      if(!id){
       const [userData, itemData] = await Promise.all([
-        getUserInfo(authToken),
-        getItemsPerUser(authToken),
+        getUserDetails(authToken, authUser),
+        getItemsPerUser(authToken, authUser),
       ])
-
-      setUser(userData)
-      setItems(itemData)
-    } catch (err) {
-      console.error("Fetch failed:", err)
+        setUser(userData)
+        setItems(itemData)
+      }
+      else {
+        const [userData, itemData] = await Promise.all([
+          getUserDetails(authToken, id),
+          getItemsPerUser(authToken, id)
+        ])
+        setUser(userData)
+        setItems(itemData)
+      }
+    } catch {
       setError(true)
     }
   }
@@ -68,9 +67,7 @@ const AccountContainer = ({ authUser, authToken }: AccountProps) => {
   }
 
   useEffect(() => {
-    if (authUser) {
       fetchUserDetails()
-    } else fetchData()
   }, [selectedItem, authToken])
 
   const handleEditClick = (item: ItemGetResponse) => {
@@ -106,8 +103,8 @@ const AccountContainer = ({ authUser, authToken }: AccountProps) => {
               <Button
                 className="btn settingsButton mt-0"
                 onClick={() => {
-                    logout()
-                    navigate("/login")
+                  logout()
+                  navigate("/login")
                 }}
               >
                 <FiLogOut />

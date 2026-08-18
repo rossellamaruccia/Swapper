@@ -1,25 +1,34 @@
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap"
-import ItemCard from "./feed-element/ItemElement"
+import ItemCard from "./feed-element/ItemCard"
 import type { ItemGetResponse } from "../../types/types"
 import FeedFilter from "./FeedFilter"
-import { useState } from "react"
 import HorizontalScrollCategories from "./HorizontalScrollCategories"
-
 
 interface FeedProps {
   items: ItemGetResponse[]
   loading: boolean
   error: boolean
   category: string
+  radius: number
   setCategory: (category: string) => void
   setRadius: (radius: number) => void
 }
 
-const FeedContainer = ({ items, loading, error, category, setCategory, setRadius}: FeedProps) => {
-
+const FeedContainer = ({
+  items,
+  loading,
+  error,
+  category,
+  radius,
+  setCategory,
+  setRadius,
+}: FeedProps) => {
   return (
     <Container fluid className="py-4">
-      <HorizontalScrollCategories category={category} setCategory={setCategory} />
+      <HorizontalScrollCategories
+        category={category}
+        setCategory={setCategory}
+      />
       <Row>
         <FeedFilter onDistanceChange={(val: number) => setRadius(val)} />
       </Row>
@@ -45,7 +54,7 @@ const FeedContainer = ({ items, loading, error, category, setCategory, setRadius
 
       {!loading && !error && items.length === 0 && (
         <p className="text-center text-muted">
-          No items found within {radius}km. Be the first to post something!
+          No items found within {radius} km. Be the first to post something!
         </p>
       )}
 

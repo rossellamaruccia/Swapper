@@ -85,12 +85,6 @@ a:hover {
   pointer-events: none;
 }
 
-.distance-filter{
-  padding: 2rem 1rem;
-  border: none;
-  text-align: center;
-}
-
 .red-highlight{
   color: #E7191F;
 }
@@ -212,6 +206,13 @@ h1 {
   transform: scale(108%);
 }
 
+.contactButton {
+  background-color: transparent;
+  color:#FE9C54;
+  font-weight: 600;
+  border: #FE9C54 2px solid;
+}
+
 .leaflet-control-zoom.leaflet-bar.leaflet-control{
   width: 1rem;
   margin-left: 1rem;
@@ -258,7 +259,7 @@ h1 {
 }
 
 .itemCard {
-  border-radius: 0;
+  border-radius: 10px;
   cursor: pointer;
 }
 
