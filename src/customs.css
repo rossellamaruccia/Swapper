@@ -6,7 +6,7 @@
   font-style: normal;
 }
 
-:root{
+:root {
   margin: 0 auto;
   padding: 0;
 }
@@ -17,25 +17,25 @@ div {
   margin: 0 auto;
 }
 
-.container{
+.container {
   margin: 0 auto;
   padding: 0;
 }
 
-.row{
+.row {
   margin: 0 auto;
   padding: 0;
 }
 
-h2{
+h2 {
   margin-left: 1rem;
 }
 
-p{
+p {
   margin-left: 1rem;
 }
 
-small{
+small {
   margin-left: 1rem;
 }
 
@@ -48,27 +48,27 @@ a:hover {
   color: #b44b00;
 }
 
-.categories-div{
-    position: relative;
+.categories-div {
+  position: relative;
   padding-top: 1em;
   overflow-x: auto;
   white-space: nowrap;
-  background-color: #DCDCDC;
+  background-color: #dcdcdc;
   border-radius: 20px;
 }
 
-.categories-div a{
+.categories-div a {
   display: inline-block;
   padding: 0.5em 1em;
-  background-color: #FE9C54;
+  background-color: #fe9c54;
   color: white;
   border-radius: 20px;
   margin-right: 10px;
-    cursor: grab;
+  cursor: grab;
 }
 
-.categories-div .selected{
-  background-color: #E7191F;
+.categories-div .selected {
+  background-color: #e7191f;
 }
 
 .categories-div::-webkit-scrollbar {
@@ -85,19 +85,19 @@ a:hover {
   pointer-events: none;
 }
 
-.red-highlight{
-  color: #E7191F;
+.red-highlight {
+  color: #e7191f;
 }
 
-.red-highlight::-webkit-slider-thumb{
-  background: #E7191F;
+.red-highlight::-webkit-slider-thumb {
+  background: #e7191f;
 }
-.red-highlight::-moz-range-thumb{
-  background: #E7191F;
+.red-highlight::-moz-range-thumb {
+  background: #e7191f;
 }
 
 h1 {
-  color: #E7191F;
+  color: #e7191f;
   font-size: 1.5em;
   font-weight: 500;
   text-align: center;
@@ -127,17 +127,16 @@ h1 {
   width: 100%;
 }
 
-.navbar-collapse.collapse{
+.navbar-collapse.collapse {
   position: sticky;
   float: right;
-
 }
 .navbar-collapse.collapse.show {
   max-height: 1em;
   overflow-y: visible;
 }
 
-.navbar-collapse.collapse.show a{
+.navbar-collapse.collapse.show a {
   z-index: 1000;
   display: block;
   margin-top: 0.6rem;
@@ -208,12 +207,12 @@ h1 {
 
 .contactButton {
   background-color: transparent;
-  color:#FE9C54;
+  color: #fe9c54;
   font-weight: 600;
-  border: #FE9C54 2px solid;
+  border: #fe9c54 2px solid;
 }
 
-.leaflet-control-zoom.leaflet-bar.leaflet-control{
+.leaflet-control-zoom.leaflet-bar.leaflet-control {
   width: 1rem;
   margin-left: 1rem;
 }
@@ -283,6 +282,27 @@ h1 {
 .card-body a {
   font-size: 0.6rem;
   border: 1px solid gray;
+}
+
+.itemDetails {
+  position: relative;
+}
+
+.favouritesButton {
+  width: max-content;
+  position: absolute;
+  top: -3.5rem;
+  right: 1rem;
+  color: black;
+  background-color: transparent;
+  border: none;
+  font-size: larger;
+  cursor: pointer;
+}
+
+.favouritesButton:hover {
+  background-color: transparent;
+  color: #e7191f;
 }
 
 .infoContainer {

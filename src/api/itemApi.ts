@@ -148,3 +148,45 @@ export async function editItem(
   const itemsData: ItemGetResponse[] = await response.json()
   return itemsData
 }
+
+export async function addToFav(
+  token: string | null,
+  itemID: number
+) {
+  if (!token) {
+    console.error("No token provided")
+  }
+  const response = await fetch(`${API_BASE_URL}/users/me/fav/add?id=${itemID}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({
+      //login failed - redirect on loginpage
+    }))
+    throw new Error(errorData.message || "Operation failed")
+  }
+}
+
+export async function removeFav(
+  token: string | null,
+  itemID: number
+) {
+  if (!token) {
+    console.error("No token provided")
+  }
+  const response = await fetch(`${API_BASE_URL}/users/me/fav/remove?id=${itemID}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({
+      //login failed - redirect on loginpage
+    }))
+    throw new Error(errorData.message || "Operation failed")
+  }
+}

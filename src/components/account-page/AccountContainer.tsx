@@ -124,8 +124,8 @@ const AccountContainer = ({ authUser, authToken, error, setError }: AccountProps
             </Col>
 
             <Col xs="12">
+              <Row className="my-5">
               <h3 className="mb-4">Your Items ({items!.length})</h3>
-              <Row>
                 {items!.length > 0 ? (
                   items!.map((item, i) => (
                     <Col xs="12" md="3" className="mt-1 mb-5" key={i + 1}>
@@ -148,6 +148,19 @@ const AccountContainer = ({ authUser, authToken, error, setError }: AccountProps
                   <p className="text-muted">
                     You haven't posted any items yet.
                   </p>
+                )}
+              </Row>
+
+              <Row className="my-5">
+              <h3 className="mb-4">Your Favourites ({user?.favouriteItems!.length})</h3>
+                {user?.favouriteItems ? (
+                  user!.favouriteItems!.map((item, i) => (
+                    <Col xs="12" md="3" className="mt-1 mb-5" key={i + 1}>
+                      <ItemElement item={item} />
+                    </Col>
+                  ))
+                ) : (
+                  <p className="text-muted">There are no elements here.</p>
                 )}
               </Row>
             </Col>

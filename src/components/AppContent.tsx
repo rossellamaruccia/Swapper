@@ -77,7 +77,7 @@ function AppContent() {
               <Route
                 path="/"
                 element={
-                  !userId ? (
+                  !items ? (
                     <HeroBanner />
                   ) : (
                     <FeedContainer
@@ -92,7 +92,7 @@ function AppContent() {
                   )
                 }
               />
-              <Route path="/detail" element={<ItemDetail />} />
+                <Route path="/detail" element={<ItemDetail activeUserId={userId!} />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<SubscribeForm />} />
 
