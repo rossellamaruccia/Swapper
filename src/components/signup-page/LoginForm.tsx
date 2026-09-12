@@ -2,20 +2,23 @@ import React, { useState } from "react"
 import { Container, Form, Button, Alert } from "react-bootstrap"
 import { loggingUser } from "../../api/userApi"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../utils/hooks"
 
 const LoginForm = () => {
   const [formValue, setFormValue] = useState({ email: "", password: "" })
   const [error, setError] = useState(false)
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault()
     try {
-      const response = await loggingUser(formValue)
-      if (!response) {
-        setError(true)
-      } else {
+      const data = await loggingUser(formValue)
+      if (data && data.accessToken) {
+        await login(data.accessToken)
         navigate("/")
+      } else {
+        setError(true)
       }
     } catch {
       setError(true)

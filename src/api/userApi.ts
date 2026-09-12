@@ -29,7 +29,7 @@ export async function newUser(data: UserSignUpRequest) {
   }
 }
 
-export async function loggingUser(payload: UserLogin): Promise<boolean> {
+export async function loggingUser(payload: UserLogin): Promise<LoginResponse> {
   try {
     const response = await fetch(API_BASE_URL + "/auth/login", {
       method: "POST",
@@ -45,7 +45,7 @@ export async function loggingUser(payload: UserLogin): Promise<boolean> {
     if (response.ok) {
       const data: LoginResponse = JSON.parse(text)
       localStorage.setItem("accessToken", data.accessToken)
-      return true
+      return data
     } else {
       try {
         const errorData = JSON.parse(text)
@@ -62,7 +62,6 @@ export async function loggingUser(payload: UserLogin): Promise<boolean> {
   } catch (error) {
     console.error("Error in POST request:", error)
     throw error
-    return false
   }
 }
 

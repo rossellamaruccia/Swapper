@@ -15,22 +15,29 @@ import { FaRegMessage } from "react-icons/fa6"
 import { FiLogOut } from "react-icons/fi"
 import EditModal from "../body/feed-element/EditModal"
 import { editItem } from "../../api/itemApi"
+import { useAuth } from "../../utils/hooks"
 
 interface AccountProps {
-  authUser: string
-  authToken: string
+  authUser: string | null | undefined
+  authToken: string | null
   error: boolean
   setError: (error: boolean) => void
 }
 
-const AccountContainer = ({ authUser, authToken, error, setError }: AccountProps) => {
+const AccountContainer = ({
+  authUser,
+  authToken,
+  error,
+  setError,
+}: AccountProps) => {
   const [user, setUser] = useState<UserGetResponse | null>(null)
   const [items, setItems] = useState<ItemGetResponse[] | undefined>([])
   const [showEditModal, setShowEditModal] = useState(false)
   const [selectedItem, setSelectedItem] = useState<ItemGetResponse | null>(null)
   const navigate = useNavigate()
 
-  
+  const { logout } = useAuth()
+
   const fetchUserDetails = async () => {
     const searchParams = new URLSearchParams(window.location.search)
     const id = searchParams.get("user")
@@ -41,18 +48,17 @@ const AccountContainer = ({ authUser, authToken, error, setError }: AccountProps
     }
 
     try {
-      if(!id){
-      const [userData, itemData] = await Promise.all([
-        getUserDetails(authToken, authUser),
-        getItemsPerUser(authToken, authUser),
-      ])
+      if (!id && authUser) {
+        const [userData, itemData] = await Promise.all([
+          getUserDetails(authToken, authUser),
+          getItemsPerUser(authToken, authUser),
+        ])
         setUser(userData)
         setItems(itemData)
-      }
-      else {
+      } else {
         const [userData, itemData] = await Promise.all([
           getUserDetails(authToken, id),
-          getItemsPerUser(authToken, id)
+          getItemsPerUser(authToken, id),
         ])
         setUser(userData)
         setItems(itemData)
@@ -62,12 +68,8 @@ const AccountContainer = ({ authUser, authToken, error, setError }: AccountProps
     }
   }
 
-  const logout = async () => {
-    localStorage.setItem("accessToken", "")
-  }
-
   useEffect(() => {
-      fetchUserDetails()
+    fetchUserDetails()
   }, [selectedItem, authToken])
 
   const handleEditClick = (item: ItemGetResponse) => {
@@ -81,10 +83,10 @@ const AccountContainer = ({ authUser, authToken, error, setError }: AccountProps
   }
 
   const handleSaveItem = async (updatedItem: Item) => {
-    console.log("Saving updated item:", updatedItem)
-    await editItem(authToken, updatedItem, selectedItem!.id)
-
-    handleCloseModal()
+    if (selectedItem) {
+      await editItem(authToken, updatedItem, selectedItem.id)
+      handleCloseModal()
+    }
   }
 
   return (
@@ -125,7 +127,7 @@ const AccountContainer = ({ authUser, authToken, error, setError }: AccountProps
 
             <Col xs="12">
               <Row className="my-5">
-              <h3 className="mb-4">Your Items ({items!.length})</h3>
+                <h3 className="mb-4">Your Items ({items!.length})</h3>
                 {items!.length > 0 ? (
                   items!.map((item, i) => (
                     <Col xs="12" md="3" className="mt-1 mb-5" key={i + 1}>
@@ -152,7 +154,9 @@ const AccountContainer = ({ authUser, authToken, error, setError }: AccountProps
               </Row>
 
               <Row className="my-5">
-              <h3 className="mb-4">Your Favourites ({user?.favouriteItems!.length})</h3>
+                <h3 className="mb-4">
+                  Your Favourites ({user?.favouriteItems!.length})
+                </h3>
                 {user?.favouriteItems ? (
                   user!.favouriteItems!.map((item, i) => (
                     <Col xs="12" md="3" className="mt-1 mb-5" key={i + 1}>

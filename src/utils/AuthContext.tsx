@@ -6,7 +6,8 @@ export interface AuthUser {
 
 interface AuthContextType {
   activeUser: AuthUser | null
-  login: (token: string) => void
+  token: string | null
+  login: (newToken: string) => Promise<void>
   logout: () => void
 }
 

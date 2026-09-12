@@ -19,21 +19,19 @@ import UserDetails from "../../account-page/UserDetails"
 import { getUserDetails } from "../../../api/userApi"
 import FavButton from "./FavButton"
 
-//Parent component
-//children: Item Element, Edit Modal
 
 interface Props {
-  activeUserId: string
+  activeUserId: string | null | undefined
+  authToken: string | null
 }
 
-const ItemDetail = ({ activeUserId }: Props) => {
+const ItemDetail = ({ activeUserId, authToken }: Props) => {
   const [itemData, setItemData] = useState<ItemGetResponse | null>(null)
   const [userData, setUserData] = useState<UserGetResponse | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [searchParams] = useSearchParams()
   const itemID = searchParams.get("itemID")
-  const authToken = localStorage.getItem("accessToken")
 
   useEffect(() => {
     const loadItem = async () => {
@@ -109,6 +107,8 @@ const ItemDetail = ({ activeUserId }: Props) => {
             <Button>Edit</Button>
             <Button>Delete</Button>
           </>
+          //TODO: separare modale EDIT dal componente USER DETAILS per poterli usare anche qui
+          //      creare modale DELETE
         ) : (
           <Col xs="12" md="4">
             <UserDetails user={userData!} />

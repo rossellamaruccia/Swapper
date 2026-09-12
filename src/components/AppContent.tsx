@@ -21,9 +21,8 @@ interface PrivateRouteProps {
   children: React.ReactNode
 }
 
-const authToken = localStorage.getItem("accessToken")
-
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
+  const authToken = localStorage.getItem("accessToken")
   return authToken ? children : <Navigate to="/login" />
 }
 
@@ -32,23 +31,31 @@ function AppContent() {
   const [radius, setRadius] = useState(20)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const [category, setCategory] = useState<string>("")
+  const [category, setCategory] = useState<string>(() => {
+    return localStorage.getItem("category") || ""
+  })
 
-  useEffect(() => {
-    const savedCategory = localStorage.getItem("category")
-    if (savedCategory) {
-      setCategory(savedCategory)
-    }
-  }, [])
+  const { activeUser, token } = useAuth()
 
   const fetchItems = async () => {
+    if (!token) {
+      setItems([])
+      setLoading(false)
+      return
+    }
+
+    setLoading(true)
+    setError(false)
+    setItems([])
     try {
       let data: ItemGetResponse[] = []
-      if (category != "") {
-        data = await getItemsPerCategory(authToken, category, radius)
+
+      if (category.trim() !== "") {
+        data = await getItemsPerCategory(token, category, radius)
       } else {
-        data = await getAllItems(authToken, radius)
+        data = await getAllItems(token, radius)
       }
+
       setItems(data)
     } catch (err) {
       console.error(err)
@@ -60,24 +67,21 @@ function AppContent() {
 
   useEffect(() => {
     fetchItems()
-  }, [])
-
-  const { activeUser } = useAuth()
-  const userId = activeUser?.id
+  }, [activeUser?.id, category, radius, token])
 
   return (
-    <Container>
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          <HeaderBar />
-          <BrowserRouter>
+    <BrowserRouter>
+      <Container>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <HeaderBar />
             <Routes>
               <Route
                 path="/"
                 element={
-                  !items ? (
+                  !activeUser ? (
                     <HeroBanner />
                   ) : (
                     <FeedContainer
@@ -94,7 +98,9 @@ function AppContent() {
               />
               <Route
                 path="/detail"
-                element={<ItemDetail activeUserId={userId!} />}
+                element={
+                  <ItemDetail activeUserId={activeUser?.id} authToken={token} />
+                }
               />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<SubscribeForm />} />
@@ -104,8 +110,8 @@ function AppContent() {
                 element={
                   <PrivateRoute>
                     <AccountContainer
-                      authUser={activeUser!.id!}
-                      authToken={authToken!}
+                      authUser={activeUser?.id}
+                      authToken={token}
                       error={error}
                       setError={setError}
                     />
@@ -139,11 +145,11 @@ function AppContent() {
             }
           /> */}
             </Routes>
-          </BrowserRouter>
-          <FooterBar />
-        </>
-      )}
-    </Container>
+            <FooterBar />
+          </>
+        )}
+      </Container>
+    </BrowserRouter>
   )
 }
 
