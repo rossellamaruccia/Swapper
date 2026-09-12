@@ -53,7 +53,6 @@ const ItemDetail = ({ activeUserId }: Props) => {
     loadItem()
   }, [itemID, authToken])
 
-
   if (loading) {
     return (
       <Container>
@@ -101,11 +100,7 @@ const ItemDetail = ({ activeUserId }: Props) => {
           <br />
         </Col>
         <Col xs="1" className="favouritesButton me-0" id="favButton">
-          <FavButton
-            token={authToken}
-            itemId={Number(itemID)}
-            activeUserId = {activeUserId}
-          />
+          <FavButton itemId={Number(itemID)} />
         </Col>
       </Row>
       <Row>

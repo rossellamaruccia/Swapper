@@ -1,65 +1,41 @@
-import { useEffect, useState } from "react"
-import { addToFav, removeFav } from "../../../api/itemApi"
-import { getUserDetails } from "../../../api/userApi"
+import React, { useState } from "react"
 import { Col } from "react-bootstrap"
-import { FaHeart, FaRegHeart } from "react-icons/fa" // Importa sia l'icona piena che vuota
-import type { ItemGetResponse } from "../../../types/types"
+import { FaHeart, FaRegHeart } from "react-icons/fa"
+import { useUser } from "../../../utils/hooks"
 
-interface Props {
-    token: string
-    itemId: number
-    activeUserId: string
+interface FavButtonProps {
+  itemId: number
 }
 
-const FavButton = ({ token, itemId, activeUserId } : Props) => {
-  const [isFavourite, setIsFavourite] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+const FavButton: React.FC<FavButtonProps> = ({ itemId }) => {
+  const { isFavourite, addFavourite, removeFavourite } = useUser()
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  useEffect(() => {
-    const checkIsFavourite = async () => {
-      try {
-        setIsLoading(true)
-        const user = await getUserDetails(token, activeUserId)
-        const favList: ItemGetResponse[] = user.favouriteItems || []
-        const found = favList.some((item) => item.id === itemId)
-        setIsFavourite(found)
-      } catch (error) {
-        console.error("Errore durante il recupero dei preferiti:", error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    if (token && itemId) {
-      checkIsFavourite()
-    }
-  }, [token, itemId])
+  const fav = isFavourite(itemId)
 
   const toggleFavourite = async () => {
-    if (isLoading) return
-    setIsLoading(true)
+    if (isSubmitting) return
+    setIsSubmitting(true)
 
-    try {
-      if (isFavourite) {
-        await removeFav(token, itemId)
-      } else {
-        await addToFav(token, itemId)
-        setIsFavourite(true)
-      }
-    } catch (error) {
-      console.error("Errore durante la gestione dei preferiti:", error)
-    } finally {
-      setIsLoading(false)
+    if (fav) {
+      await removeFavourite(itemId)
+    } else {
+      await addFavourite(itemId)
     }
+
+    setIsSubmitting(false)
   }
 
   return (
     <Col xs="1" className="favouritesButton me-0" id="favButton">
       <span
         onClick={toggleFavourite}
-        style={{ cursor: isLoading ? "wait" : "pointer", fontSize: "1.5rem" }}
+        style={{
+          cursor: isSubmitting ? "wait" : "pointer",
+          fontSize: "1.5rem",
+        }}
       >
-        {isFavourite ? <FaHeart style={{ color: "red" }} /> : <FaRegHeart />}
+        {fav ? <FaHeart style={{ color: "red" }} /> : <FaRegHeart />}
       </span>
     </Col>
   )

@@ -8,7 +8,7 @@ import LoginForm from "./signup-page/LoginForm"
 import SubscribeForm from "./signup-page/SubscribeForm"
 import AccountContainer from "./account-page/AccountContainer"
 import AddForm from "./add-page/AddForm"
-import { useAuth } from "../utils/AuthContext"
+import { useAuth } from "../utils/hooks"
 import EditForm from "./account-page/EditForm"
 import ItemDetail from "./body/feed-element/ItemDetail"
 import InfoPage from "./info-page/InfoPage"
@@ -60,7 +60,7 @@ function AppContent() {
 
   useEffect(() => {
     fetchItems()
-  }, [authToken, category, radius])
+  }, [])
 
   const { activeUser } = useAuth()
   const userId = activeUser?.id
@@ -84,15 +84,18 @@ function AppContent() {
                       items={items}
                       loading={loading}
                       error={error}
-                                category={category}
-                                radius={radius}
-                                setCategory={setCategory}
-                                setRadius={setRadius}
+                      category={category}
+                      radius={radius}
+                      setCategory={setCategory}
+                      setRadius={setRadius}
                     />
                   )
                 }
               />
-                <Route path="/detail" element={<ItemDetail activeUserId={userId!} />} />
+              <Route
+                path="/detail"
+                element={<ItemDetail activeUserId={userId!} />}
+              />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<SubscribeForm />} />
 

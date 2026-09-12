@@ -66,42 +66,21 @@ export async function loggingUser(payload: UserLogin): Promise<boolean> {
   }
 }
 
-export async function getUserInfo(
-  token: string | null,
-): Promise<UserGetResponse> {
-  if (!token) {
-    console.error("No token provided")
-  }
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/users/me`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-
-    if (response.ok) {
-      const data: UserGetResponse = await response.json()
-      return data
-    } else throw new Error("Login failed")
-  } catch (error) {
-    console.error("Network or parsing error:", error)
-    throw error
-  }
-}
-
 export async function getUserDetails(
   token: string | null,
   userID: string | null,
 ): Promise<UserGetResponse> {
   if (!token) {
     console.error("No token provided")
+    throw new Error("Please Log in again")
   }
 
+  const url = userID == null
+    ? `${API_BASE_URL}/users/details`
+    : `${API_BASE_URL}/users/details?id=${userID}`
+
   try {
-    const response = await fetch(`${API_BASE_URL}/users/details?id=${userID}`, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -109,10 +88,12 @@ export async function getUserDetails(
       },
     })
 
-    if (response.ok) {
-      const data: UserGetResponse = await response.json()
-      return data
-    } else throw new Error("Login failed")
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const data: UserGetResponse = await response.json()
+    return data
   } catch (error) {
     console.error("Network or parsing error:", error)
     throw error
