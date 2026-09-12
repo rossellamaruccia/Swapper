@@ -3,62 +3,76 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { Container, Row, Col, Button, Alert } from "react-bootstrap"
 import UserDetails from "./UserDetails"
-import { getUserInfo } from "../../api/userApi"
+import { getUserDetails } from "../../api/userApi"
 import { getAuthStatus } from "../../utils/authTools"
-import { useAuth } from "../../utils/AuthContext"
 import { getItemsPerUser } from "../../api/itemApi"
 import type { ItemGetResponse, Item, UserGetResponse } from "../../types/types"
-import ItemElement from "../body/feed-element/ItemElement"
+import ItemElement from "../body/feed-element/ItemCard"
 import LoginForm from "../signup-page/LoginForm"
 import { FaEdit } from "react-icons/fa"
 import { MdDelete } from "react-icons/md"
 import { FaRegMessage } from "react-icons/fa6"
 import { FiLogOut } from "react-icons/fi"
-import AddButton from "../header/AddButton"
 import EditModal from "../body/feed-element/EditModal"
 import { editItem } from "../../api/itemApi"
+import { useAuth } from "../../utils/hooks"
 
-const AccountContainer = () => {
+interface AccountProps {
+  authUser: string | null | undefined
+  authToken: string | null
+  error: boolean
+  setError: (error: boolean) => void
+}
+
+const AccountContainer = ({
+  authUser,
+  authToken,
+  error,
+  setError,
+}: AccountProps) => {
   const [user, setUser] = useState<UserGetResponse | null>(null)
-  const [items, setItems] = useState<ItemGetResponse[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const [items, setItems] = useState<ItemGetResponse[] | undefined>([])
   const [showEditModal, setShowEditModal] = useState(false)
   const [selectedItem, setSelectedItem] = useState<ItemGetResponse | null>(null)
- const authentication = useAuth()
-  const authToken = localStorage.getItem("accessToken")
   const navigate = useNavigate()
 
+  const { logout } = useAuth()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!authToken || !getAuthStatus(authToken)) {
-        setError(true)
-        setIsLoading(false)
-        return
-      }
+  const fetchUserDetails = async () => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const id = searchParams.get("user")
 
-      try {
-        const [userData, itemData] = await Promise.all([
-          getUserInfo(authToken),
-          getItemsPerUser(authToken)
-        ])
-
-        setUser(userData)
-        setItems(itemData)
-
-      } catch (err) {
-        console.error("Fetch failed:", err)
-        setError(true)
-      } finally {
-        setIsLoading(false)
-      }
+    if (!authToken || !getAuthStatus(authToken)) {
+      setError(true)
+      navigate("/login")
     }
 
-    fetchData()
+    try {
+      if (!id && authUser) {
+        const [userData, itemData] = await Promise.all([
+          getUserDetails(authToken, authUser),
+          getItemsPerUser(authToken, authUser),
+        ])
+        setUser(userData)
+        setItems(itemData)
+      } else {
+        const [userData, itemData] = await Promise.all([
+          getUserDetails(authToken, id),
+          getItemsPerUser(authToken, id),
+        ])
+        setUser(userData)
+        setItems(itemData)
+      }
+    } catch {
+      setError(true)
+    }
+  }
+
+  useEffect(() => {
+    fetchUserDetails()
   }, [selectedItem, authToken])
 
-  const handleEditClick = (item : ItemGetResponse) => {
+  const handleEditClick = (item: ItemGetResponse) => {
     setShowEditModal(true)
     setSelectedItem(item)
   }
@@ -69,98 +83,102 @@ const AccountContainer = () => {
   }
 
   const handleSaveItem = async (updatedItem: Item) => {
-    console.log("Saving updated item:", updatedItem)
-    await editItem(authToken, updatedItem, selectedItem!.id)
-    
-    handleCloseModal();
-  }
-
-  if (isLoading) {
-    return (
-      <Alert className="my-3 p-3 text-center w-50 mx-auto">
-        Loading user profile...
-      </Alert>
-    )
-  }
-
-  if (error || !user) {
-    return (
-      <Container className="text-center mt-5">
-        <Alert variant="info" className="my-3 p-3 text-center w-50 mx-auto">
-          Session expired. Please log in again.
-        </Alert>
-        <LoginForm />
-      </Container>
-    )
+    if (selectedItem) {
+      await editItem(authToken, updatedItem, selectedItem.id)
+      handleCloseModal()
+    }
   }
 
   return (
-    <Container fluid className="py-4">
-      <Row className="align-items-top">
-        <Col xs={12} className="text-end">
-          <AddButton />
-          <Button className="btn settingsButton mt-1">
-            <FaRegMessage />
-            <span className="label">Check your messages</span>
-          </Button>
-          <Button
-            className="btn settingsButton mt-0"
-            onClick={() => {
-              authentication.logout()
-              navigate("/")
-            }}
-          >
-            <FiLogOut />
-            <span className="label">Log out</span>
-          </Button>
-          <Button
-            className="btn settingsButton mt-0"
-            onClick={() => navigate("/account/edit")}
-          >
-            <FaEdit />
-            <span className="label">Edit your profile</span>
-          </Button>
-          <Button className="btn settingsButton mt-0">
-            <MdDelete />
-            <span className="label">Delete your profile</span>
-          </Button>
-        </Col>
-      </Row>
+    <>
+      {!error || user ? (
+        <Container fluid className="py-4">
+          <Row className="align-items-top">
+            <Col xs="12" md="9">
+              <UserDetails user={user} />
+            </Col>
+            <Col xs={12} md="3" className="text-end">
+              <Button className="btn settingsButton mt-1">
+                <FaRegMessage />
+                <span className="label">Check your messages</span>
+              </Button>
+              <Button
+                className="btn settingsButton mt-0"
+                onClick={() => {
+                  logout()
+                  navigate("/login")
+                }}
+              >
+                <FiLogOut />
+                <span className="label">Log out</span>
+              </Button>
+              <Button
+                className="btn settingsButton mt-0"
+                onClick={() => navigate("/account/edit")}
+              >
+                <FaEdit />
+                <span className="label">Edit your profile</span>
+              </Button>
+              <Button className="btn settingsButton mt-0">
+                <MdDelete />
+                <span className="label">Delete your profile</span>
+              </Button>
+            </Col>
 
-      <hr className="my-5" />
+            <Col xs="12">
+              <Row className="my-5">
+                <h3 className="mb-4">Your Items ({items!.length})</h3>
+                {items!.length > 0 ? (
+                  items!.map((item, i) => (
+                    <Col xs="12" md="3" className="mt-1 mb-5" key={i + 1}>
+                      <ItemElement item={item} />
+                      <Button
+                        onClick={() => handleEditClick(item)}
+                        className="settingsButton my-1"
+                      >
+                        Edit item
+                      </Button>
+                      <EditModal
+                        show={showEditModal}
+                        handleClose={handleCloseModal}
+                        item={item}
+                        onSave={handleSaveItem}
+                      />
+                    </Col>
+                  ))
+                ) : (
+                  <p className="text-muted">
+                    You haven't posted any items yet.
+                  </p>
+                )}
+              </Row>
 
-      <Row>
-        <Col xs="8" md="3">
-          <UserDetails user={user} />
-        </Col>
-        <Col xs="12" md="9">
-          <h3 className="mb-4">Your Items ({items.length})</h3>
-          <Row>
-            {items.length > 0 ? (
-              items.map((item, i) => (
-                <Col xs="12" md="3" className="mt-1 mb-5">
-                  <ItemElement item={item} key={i + 1} />
-                  <Button
-                    onClick={() => handleEditClick(item)}
-                    className="settingsButton my-1"
-                  >
-                    Edit item
-                  </Button>
-                  <EditModal
-                    show={showEditModal}
-                    handleClose={handleCloseModal}
-                    item={item}
-                    onSave={handleSaveItem}
-                  />
-                </Col>
-              ))
-            ) : (
-              <p className="text-muted">You haven't posted any items yet.</p>
-            )}
+              <Row className="my-5">
+                <h3 className="mb-4">
+                  Your Favourites ({user?.favouriteItems!.length})
+                </h3>
+                {user?.favouriteItems ? (
+                  user!.favouriteItems!.map((item, i) => (
+                    <Col xs="12" md="3" className="mt-1 mb-5" key={i + 1}>
+                      <ItemElement item={item} />
+                    </Col>
+                  ))
+                ) : (
+                  <p className="text-muted">There are no elements here.</p>
+                )}
+              </Row>
+            </Col>
           </Row>
-        </Col>
-      </Row>
-    </Container>
+        </Container>
+      ) : (
+        <Container className="text-center mt-5">
+          <Alert variant="info" className="my-3 p-3 text-center w-50 mx-auto">
+            Session expired. Please log in again.
+          </Alert>
+          <LoginForm />
+        </Container>
+      )}
+    </>
   )
 }
 

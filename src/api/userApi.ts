@@ -1,4 +1,4 @@
-const API_BASE_URL: string = import.meta.env.API_BASE_URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 import type {
   UserLogin,
@@ -29,7 +29,7 @@ export async function newUser(data: UserSignUpRequest) {
   }
 }
 
-export async function loggingUser(payload: UserLogin): Promise<boolean> {
+export async function loggingUser(payload: UserLogin): Promise<LoginResponse> {
   try {
     const response = await fetch(API_BASE_URL + "/auth/login", {
       method: "POST",
@@ -45,50 +45,17 @@ export async function loggingUser(payload: UserLogin): Promise<boolean> {
     if (response.ok) {
       const data: LoginResponse = JSON.parse(text)
       localStorage.setItem("accessToken", data.accessToken)
-      window.location.href = "/account"
-      return true
+      return data
     } else {
       try {
         const errorData = JSON.parse(text)
-        console.log(
-          "Login failed:",
-          errorData.message || errorData.error || text,
-        )
         throw new Error(errorData.message || errorData.error || "Login failed")
       } catch {
-        console.log("Login failed:", text)
         throw new Error(text || "Login failed")
       }
     }
   } catch (error) {
     console.error("Error in POST request:", error)
-    throw error
-    return false
-  }
-}
-
-export async function getUserInfo(
-  token: string | null,
-): Promise<UserGetResponse> {
-  if (!token) {
-    console.error("No token provided")
-  }
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/users/me`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-
-    if (response.ok) {
-      const data: UserGetResponse = await response.json()
-      return data
-    } else throw new Error("Login failed")
-  } catch (error) {
-    console.error("Network or parsing error:", error)
     throw error
   }
 }
@@ -99,10 +66,15 @@ export async function getUserDetails(
 ): Promise<UserGetResponse> {
   if (!token) {
     console.error("No token provided")
+    throw new Error("Please Log in again")
   }
 
+  const url = userID == null
+    ? `${API_BASE_URL}/users/details`
+    : `${API_BASE_URL}/users/details?id=${userID}`
+
   try {
-    const response = await fetch(`${API_BASE_URL}/users/details?id=${userID}`, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -110,10 +82,12 @@ export async function getUserDetails(
       },
     })
 
-    if (response.ok) {
-      const data: UserGetResponse = await response.json()
-      return data
-    } else throw new Error("Login failed")
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const data: UserGetResponse = await response.json()
+    return data
   } catch (error) {
     console.error("Network or parsing error:", error)
     throw error

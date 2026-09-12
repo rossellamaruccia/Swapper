@@ -1,51 +1,42 @@
-import { useState, useEffect } from "react"
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap"
-import ItemCard from "./feed-element/ItemElement"
+import ItemCard from "./feed-element/ItemCard"
 import type { ItemGetResponse } from "../../types/types"
-import { getAllItems, getItemsPerCategory } from "../../api/itemApi"
 import FeedFilter from "./FeedFilter"
+import HorizontalScrollCategories from "./HorizontalScrollCategories"
 
-const FeedContainer = () => {
-  const [items, setItems] = useState<ItemGetResponse[]>([])
-  const [radius, setRadius] = useState(20)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+interface FeedProps {
+  items: ItemGetResponse[]
+  loading: boolean
+  error: boolean
+  category: string
+  radius: number
+  setCategory: (category: string) => void
+  setRadius: (radius: number) => void
+}
 
-  const authToken = localStorage.getItem("accessToken")
-  const category = localStorage.getItem("category")
-
-  const fetchItems = async () => {
-    try {
-      setLoading(true)
-      let data: ItemGetResponse[] = []
-      if (category != "") {
-        data = await getItemsPerCategory(authToken, category, radius)
-      } else {
-        data = await getAllItems(authToken, radius)
-      }
-      setItems(data)
-    } catch (err) {
-      console.error(err)
-      setError(true)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchItems()
-  }, [authToken, category, radius])
-
+const FeedContainer = ({
+  items,
+  loading,
+  error,
+  category,
+  radius,
+  setCategory,
+  setRadius,
+}: FeedProps) => {
   return (
     <Container fluid className="py-4">
+      <HorizontalScrollCategories
+        category={category}
+        setCategory={setCategory}
+      />
+      <Row>
+        <FeedFilter onDistanceChange={(val: number) => setRadius(val)} />
+      </Row>
       <Row className="mb-4">
         <Col>
-          <h4>What's new around you:</h4>
+          <h1>What's new around you:</h1>
           <hr />
         </Col>
-      </Row>
-      <Row>
-        <FeedFilter onDistanceChange={(val : number) => setRadius(val)} />
       </Row>
 
       {loading && (
@@ -63,7 +54,7 @@ const FeedContainer = () => {
 
       {!loading && !error && items.length === 0 && (
         <p className="text-center text-muted">
-          No items found within {radius}km. Be the first to post something!
+          No items found within {radius} km. Be the first to post something!
         </p>
       )}
 

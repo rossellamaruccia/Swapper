@@ -1,17 +1,23 @@
 import React, { useState } from "react"
 import { Container, Form, Button, Alert } from "react-bootstrap"
 import { loggingUser } from "../../api/userApi"
-
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../utils/hooks"
 
 const LoginForm = () => {
   const [formValue, setFormValue] = useState({ email: "", password: "" })
   const [error, setError] = useState(false)
+  const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault()
     try {
-      const response = await loggingUser(formValue)
-      if (!response) {
+      const data = await loggingUser(formValue)
+      if (data && data.accessToken) {
+        await login(data.accessToken)
+        navigate("/")
+      } else {
         setError(true)
       }
     } catch {
@@ -22,7 +28,7 @@ const LoginForm = () => {
   return (
     <Container fluid className="hero py-5">
       <Form className="customForm" onSubmit={handleSubmit}>
-        <h4>login</h4>
+        <h1>login</h1>
         <Form.Group className="mb-2">
           <Form.Control
             type="email"

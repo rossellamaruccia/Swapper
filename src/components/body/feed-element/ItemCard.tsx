@@ -1,4 +1,3 @@
-import React from "react"
 import { Card, Stack } from "react-bootstrap"
 import type { ItemGetResponse } from "../../../types/types"
 import { useNavigate } from "react-router-dom"
@@ -7,10 +6,8 @@ interface ItemCardProps {
   item: ItemGetResponse
 }
 
-const ItemCard: React.FC<ItemCardProps> = ({item}) => {
+const ItemCard = ({item} : ItemCardProps) => {
  
-  const isBorrow = item.type === "BORROW"
-  const badgeBg = isBorrow ? "info" : "success"
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -18,7 +15,7 @@ const ItemCard: React.FC<ItemCardProps> = ({item}) => {
   } 
 
   return (
-    <Card className="h-100 shadow-sm itemCard" border={badgeBg} onClick={handleClick}>
+    <Card className="h-100 shadow-sm itemCard" onClick={handleClick}>
       <Card.Img
         variant="top"
         src={
