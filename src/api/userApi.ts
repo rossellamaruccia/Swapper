@@ -49,13 +49,8 @@ export async function loggingUser(payload: UserLogin): Promise<LoginResponse> {
     } else {
       try {
         const errorData = JSON.parse(text)
-        console.log(
-          "Login failed:",
-          errorData.message || errorData.error || text,
-        )
         throw new Error(errorData.message || errorData.error || "Login failed")
       } catch {
-        console.log("Login failed:", text)
         throw new Error(text || "Login failed")
       }
     }

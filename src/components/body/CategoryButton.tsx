@@ -18,7 +18,6 @@ function CategoryButton({ title, category, setCategory }: Props) {
 
   function handleClick(e: MouseEvent<HTMLAnchorElement>) {
     e.preventDefault()
-    console.log("Button clicked!")
     if (category === title.title) {
       localStorage.setItem("category", "")
       setCategory("")
