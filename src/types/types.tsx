@@ -21,15 +21,17 @@ export interface LoginResponse{
 export interface User {
   name?: string
   surname?: string
-  email: string
+  email?: string
   city?: string
   profilePic?: string | null
-  items?: Item[]
+  items?: ItemGetResponse[]
   location?: Geolocation
 }
 
 export interface UserGetResponse extends User {
   id: string
+  username?: string
+  favouriteItems?: ItemGetResponse[]
 }
 
 export interface UserSignUpRequest extends User {

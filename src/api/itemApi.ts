@@ -1,5 +1,5 @@
-const API_BASE_URL: string = import.meta.env.API_BASE_URL
 import type { Item, ItemGetResponse } from "../types/types"
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export async function addNewItem(token: string | null, body: Item) {
   if (!token) {
@@ -33,7 +33,8 @@ export async function addNewItem(token: string | null, body: Item) {
 }
 
 export async function getAllItems(
-  token: string | null, radius: number | null
+  token: string | null,
+  radius: number | null,
 ): Promise<ItemGetResponse[]> {
   if (!token) {
     console.error("No token provided")
@@ -42,6 +43,8 @@ export async function getAllItems(
   const response = await fetch(`${API_BASE_URL}/items/feed?radius=${radius}`, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      Pragma: "no-cache",
     },
   })
 
@@ -57,8 +60,9 @@ export async function getAllItems(
 
 export async function getItemsPerUser(
   token: string | null,
+  id: string | null,
 ): Promise<ItemGetResponse[]> {
-  const response = await fetch(`${API_BASE_URL}/items`, {
+  const response = await fetch(`${API_BASE_URL}/items?user=${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -73,7 +77,10 @@ export async function getItemsPerUser(
   return itemsData
 }
 
-export async function getItemDetails(token: string | null, itemID: number): Promise<ItemGetResponse>{
+export async function getItemDetails(
+  token: string | null,
+  itemID: number,
+): Promise<ItemGetResponse> {
   const response = await fetch(`${API_BASE_URL}/items/details?id=${itemID}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -92,13 +99,15 @@ export async function getItemDetails(token: string | null, itemID: number): Prom
 export async function getItemsPerCategory(
   token: string | null,
   category: string | null,
-  radius: number | null
+  radius: number | null,
 ): Promise<ItemGetResponse[]> {
   const response = await fetch(
     `${API_BASE_URL}/items/feed?radius=${radius}&category=${category}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Cache-Control": "no-cache, no-store, must-revalidate", // Previeni cache
+        Pragma: "no-cache",
       },
     },
   )
@@ -146,4 +155,46 @@ export async function editItem(
   }
   const itemsData: ItemGetResponse[] = await response.json()
   return itemsData
+}
+
+export async function addToFav(token: string | null, itemID: number) {
+  if (!token) {
+    console.error("No token provided")
+  }
+  const response = await fetch(
+    `${API_BASE_URL}/users/me/fav/add?id=${itemID}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  )
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({
+      //login failed - redirect on loginpage
+    }))
+    throw new Error(errorData.message || "Operation failed")
+  }
+}
+
+export async function removeFav(token: string | null, itemID: number) {
+  if (!token) {
+    console.error("No token provided")
+  }
+  const response = await fetch(
+    `${API_BASE_URL}/users/me/fav/remove?id=${itemID}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  )
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({
+      //login failed - redirect on loginpage
+    }))
+    throw new Error(errorData.message || "Operation failed")
+  }
 }

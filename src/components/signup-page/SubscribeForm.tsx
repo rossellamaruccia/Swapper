@@ -55,7 +55,7 @@ const SubscribeForm = () => {
   return (
     <Container fluid className="hero py-5">
       <Form className="customForm" onSubmit={handleSubmit}>
-        <h4>Become a swapper!</h4>
+        <h1>Become a swapper!</h1>
 
         <Form.Group className="mb-2">
           <Form.Label>Name</Form.Label>
@@ -146,10 +146,17 @@ const SubscribeForm = () => {
         </div>
 
         {isSuccess && (
-          <Alert variant="success" className="mt-3">
-            You're in! Check your confirmation email and start exploring
-            Swappie.
-          </Alert>
+          <>
+            <Alert variant="success" className="mt-3">
+              You're in! Start exploring Swappie or add your first item.
+            </Alert>
+            <Button variant="success">
+              <a href="/">Feed</a>
+            </Button>
+            <Button variant="success">
+              <a href="/add">Add Item</a>
+            </Button>
+          </>
         )}
 
         {errorMessage && (

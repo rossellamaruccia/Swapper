@@ -4,7 +4,7 @@ import LocationMap from "./LocationMap"
 import { useNavigate } from "react-router-dom"
 
 interface ElementProps {
-  user: UserGetResponse
+  user: UserGetResponse | null
 }
 
 const UserDetails = ({ user }: ElementProps) => {
@@ -12,13 +12,18 @@ const UserDetails = ({ user }: ElementProps) => {
   return (
     <>
       {user ? (
-        <Card onClick={() => { navigate(`/account?user=${user.id}`)}} className="pointer">
+        <Card
+          onClick={() => {
+            navigate(`/account?user=${user.id}`)
+          }}
+          className="mb-2"
+        >
           <Card.Body>
-            <Stack direction="horizontal" className="mt-auto mb-2">
-              <Image src={user.profilePic!} className="profile-picture mx-1" />
+            <Stack direction="horizontal" className="mb-2">
               <h6>
-                {user.name} {user.surname}, {user.city}
+                {user.name}, {user.city}
               </h6>
+              <Image src={user.profilePic!} className="profile-picture mx-1" />
             </Stack>
             <LocationMap lng={user.location!.lng} lat={user.location!.lat} />
           </Card.Body>

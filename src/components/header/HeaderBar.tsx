@@ -4,9 +4,7 @@ import SettingsButton from "./SettingsButton"
 import { Row, Col, Navbar, Container } from "react-bootstrap"
 import AddButton from "./AddButton"
 import HelpButton from "./HelpButton"
-import CategoryButton from "../footer/CategoryButton"
 import AccountButton from "./AccountButton"
-import { ItemCategory } from "../../types/types"
 
 function HeaderBar() {
   return (
@@ -20,18 +18,12 @@ function HeaderBar() {
         </Col>
         <Col className="buttonsCol" md={{ order: 2 }}>
           <Navbar.Toggle />
-          <Navbar.Collapse id="responsive-navbar-nav">
+          <Navbar.Collapse>
             <AccountButton />
             <AddButton />
             <SettingsButton />
             <HelpButton />
           </Navbar.Collapse>
-        </Col>
-
-        <Col className="col col-12" md={{ order: 3 }}>
-          {Object.values(ItemCategory).map((value) => (
-            <CategoryButton title={{ title: value }} />
-          ))}
         </Col>
       </Row>
     </Navbar>

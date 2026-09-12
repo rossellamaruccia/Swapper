@@ -3,9 +3,9 @@ import { Container, Form, Button, Alert } from "react-bootstrap"
 import type { User } from "../../types/types"
 import {
   modifyUser,
-  getUserInfo,
   updateProfilePic,
   updateUserLocation,
+  getUserDetails,
 } from "../../api/userApi"
 import { useNavigate } from "react-router-dom"
 import { getAuthStatus } from "../../utils/authTools"
@@ -39,7 +39,7 @@ const EditForm = () => {
         return
       }
       try {
-        const userData = await getUserInfo(authToken)
+        const userData = await getUserDetails(authToken, null)
         setUser(userData)
       } catch (err) {
         setError("Could not get user information")
