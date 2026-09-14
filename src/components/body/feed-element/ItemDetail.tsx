@@ -74,20 +74,24 @@ const ItemDetail = ({ activeUserId, authToken }: Props) => {
   }
   return (
     <>
-      <Row className="bg-danger-subtle rounded">
-        {itemData?.pics_urls?.map((pic, i = 0) => (
-          <Col xs="12" md="6" className="mt-3">
-            <Image
-              key={i + 1}
-              fluid
-              src={pic}
-              className="w-100 object-fit-cover h-75 rounded"
-            />
+      <Row className="flex-column flex-md-row">
+        <Col md="8" className="bg-danger-subtle rounded my-4 pb-5 itemPic">
+          {itemData?.pics_urls?.map((pic, i = 0) => (
+            <Col xs="12" md="6" className="mt-3">
+              <Image
+                key={i + 1}
+                fluid
+                src={pic}
+                className="w-100 object-fit-cover rounded d-flex"
+              />
+            </Col>
+          ))}
+          <Col xs="1" className="favouritesButton" id="favButton">
+            <FavButton itemId={Number(itemID)} />
           </Col>
-        ))}
-      </Row>
-      <Row className="mx-0 itemDetails">
-        <Col xs="10" md="7" className="m-0 mb-2 p-0">
+        </Col>
+
+        <Col xs="10" md="4" className="m-0 mb-2 p-0">
           <br />
           <h2>{itemData?.title}</h2>
           <p>{itemData?.description}</p>
@@ -96,25 +100,26 @@ const ItemDetail = ({ activeUserId, authToken }: Props) => {
           <br />
           <small className="red-highlight">{itemData?.category}</small>
           <br />
+
+          {activeUserId === userData?.id ? (
+            <>
+              <Button>Edit</Button>
+              <Button>Delete</Button>
+            </>
+          ) : (
+            //TODO: separare modale EDIT dal componente USER DETAILS per poterli usare anche qui
+            //      creare modale DELETE
+            <div className="mt-4 ms-2">
+              <UserDetails user={userData!} />
+              <Button className="mt-2 contactButton d-block">
+                Lend the item
+              </Button>
+              <Button className="mt-2 contactButton  d-block">
+                Contact the owner
+              </Button>
+            </div>
+          )}
         </Col>
-        <Col xs="1" className="favouritesButton me-0" id="favButton">
-          <FavButton itemId={Number(itemID)} />
-        </Col>
-      </Row>
-      <Row>
-        {activeUserId === userData?.id ? (
-          <>
-            <Button>Edit</Button>
-            <Button>Delete</Button>
-          </>
-          //TODO: separare modale EDIT dal componente USER DETAILS per poterli usare anche qui
-          //      creare modale DELETE
-        ) : (
-          <Col xs="12" md="4">
-            <UserDetails user={userData!} />
-            <Button className="mt-2 contactButton">Contact the owner</Button>
-          </Col>
-        )}
       </Row>
     </>
   )

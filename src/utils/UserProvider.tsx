@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import { getUserDetails } from "../api/userApi"
 import { addToFav, removeFav } from "../api/itemApi"
 import { UserContext } from "./UserContext"
+import type { UserGetResponse } from "../types/types"
 
 
 interface UserProviderProps {
@@ -16,18 +17,21 @@ export const UserProvider: React.FC<UserProviderProps> = ({
 }) => {
   const [favouriteIds, setFavouriteIds] = useState<Set<number>>(new Set())
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [userDetails, setUserDetails] = useState<UserGetResponse>()
 
   useEffect(() => {
-    const fetchUserFavourites = async () => {
+    const fetchUserInfo = async () => {
       if (!token) {
         setFavouriteIds(new Set())
         setIsLoading(false)
+        setUserDetails(undefined)
         return
       }
 
       try {
         setIsLoading(true)
         const user = await getUserDetails(token, null)
+        setUserDetails(user)
 
         if (user.favouriteItems) {
           const ids = new Set<number>(
@@ -42,7 +46,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({
       }
     }
 
-    fetchUserFavourites()
+    fetchUserInfo()
   }, [token])
 
   const addFavourite = async (itemId: number) => {
@@ -77,6 +81,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({
   return (
     <UserContext.Provider
       value={{
+        userDetails,
         favouriteIds,
         isLoading,
         addFavourite,

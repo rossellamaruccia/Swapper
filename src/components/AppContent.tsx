@@ -36,7 +36,7 @@ function AppContent() {
   })
 
   const { activeUser, token } = useAuth()
-
+  
   const fetchItems = async () => {
     if (!token) {
       setItems([])
@@ -81,9 +81,7 @@ function AppContent() {
               <Route
                 path="/"
                 element={
-                  !activeUser ? (
-                    <HeroBanner />
-                  ) : (
+            token ?(
                     <FeedContainer
                       items={items}
                       loading={loading}
@@ -93,6 +91,8 @@ function AppContent() {
                       setCategory={setCategory}
                       setRadius={setRadius}
                     />
+                  ) : (
+                    <HeroBanner />
                   )
                 }
               />
