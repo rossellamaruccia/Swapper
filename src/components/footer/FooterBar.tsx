@@ -12,7 +12,7 @@ function FooterBar() {
         <hr></hr>
         <Row className="text-center">
           <Col>
-            <h1>Swappie</h1>
+            <h1>Swapper</h1>
             <CustomLink title={{ title: "Who and why" }} />
             <CustomLink title={{ title: "Community and care" }} />
             <CustomLink title={{ title: "Results" }} />
