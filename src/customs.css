@@ -118,28 +118,45 @@ h1 {
 }
 
 .logoCol {
-  max-width: 20%;
+  max-width: fit-content;
   margin-right: 2rem;
 }
 
 .navbar {
   position: sticky;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.893);
+  z-index: 1000;
+  margin-top: 1rem;
+  max-height: fit-content;
   width: 100%;
 }
 
-.navbar-collapse.collapse {
-  position: sticky;
-  float: right;
+.navbar-toggler {
+  transition: none;
+  transform: none;
 }
+
 .navbar-collapse.collapse.show {
+  position: absolute;
   max-height: 1em;
   overflow-y: visible;
 }
 
 .navbar-collapse.collapse.show a {
+  transition: none;
+  transform: none;
   z-index: 1000;
-  display: block;
+  display: flex;
   margin-top: 0.6rem;
+}
+
+.collapseMenu{
+    position: absolute;
+    top: 3em;
+    right: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.934);
 }
 
 .formCol {
@@ -151,12 +168,14 @@ h1 {
 }
 
 .buttonsCol {
+  position: relative;
   text-align: end;
-  max-width: 15%;
+  max-width: fit-content;
 }
 
-.settingsButton {
-  background: white;
+.navButton {
+  background: none;
+  position: relative;
   color: black;
   border: none;
   font-weight: 500;
@@ -164,22 +183,19 @@ h1 {
   padding: 10px;
 }
 
-.settingsButton:hover {
+.navButton:hover {
   background: white;
   color: green;
   border: none;
   font-weight: 500;
   font-size: large;
-  opacity: 1;
-  visibility: visible;
   transform: scale(105%, 105%);
 }
 
 .label {
   position: absolute;
-  bottom: 65%;
-  left: 50%;
   transform: translateX(-50%);
+  top: 3rem;
   background-color: #333;
   color: white;
   padding: 5px 10px;
@@ -190,11 +206,11 @@ h1 {
   visibility: hidden;
   transition:
     opacity 0.3s ease,
-    transform 0.3s ease;
+    transform 1s ease;
   pointer-events: none;
 }
 
-.settingsButton:hover .label {
+.navButton:hover .label {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(-5px);
