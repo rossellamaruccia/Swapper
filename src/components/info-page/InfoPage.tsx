@@ -11,6 +11,12 @@ function InfoPage() {
             sharing practises and community building. My name is Rossella, I am
             32yo and I live in the prettiest city, Pisa, Italy.
           </p>
+          <p>Ingredients are:</p>
+          <ul>
+            <li>REACT + TYPESCRIPT</li>
+            <li>SPRING BOOT + java 21</li>
+            <li>MS AZURE cloud services for the deployment</li>
+          </ul>
         </Col>
       </Row>
       <Row className="infoContainer">
